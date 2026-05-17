@@ -134,6 +134,21 @@ Six tabs served at `http://127.0.0.1:5000`:
 | **Signals** | Filterable table of all 600+ raw signals |
 | **Runs** | Collection history + "Run Now" trigger |
 
+### Overview
+![Overview](docs/dashboard.png)
+
+### Bottleneck Index
+![Bottleneck](docs/tab-bottleneck.png)
+
+### Agent Adoption Heatmap
+![Adoption](docs/tab-adoption.png)
+
+### Weekly Memo
+![Memos](docs/tab-memos.png)
+
+### Raw Signals
+![Signals](docs/tab-signals.png)
+
 ---
 
 ## Setup
