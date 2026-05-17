@@ -253,6 +253,16 @@ All scoring uses `cache_control: ephemeral` prompt caching, reducing input token
 
 ---
 
+## Inspiration
+
+This project was inspired by the podcast episode **"Anthropic's $1.2T Valuation, Leopold's $5.5B Fund, and the Compute Bottleneck | EP #255"** — which laid out the thesis that the AI race is becoming an industrial supply-chain race, with the constraint migrating from models to chips, power, and geopolitics.
+
+[![YouTube](https://img.shields.io/badge/YouTube-EP%20%23255-red)](https://www.youtube.com/watch?v=0hK__1vkqMg)
+
+The research framework — the four-layer causal chain, weekly signal categories, bottleneck scoring rubrics, industry adoption heatmap, and 90-day execution plan — was distilled from that episode by **ChatGPT 5.5**, which turned the podcast thesis into an actionable intelligence system spec. Claude Code then built the system from that spec.
+
+---
+
 ## License
 
 MIT
