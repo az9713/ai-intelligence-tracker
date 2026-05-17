@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Intelligence Dashboard</title>
+  <link rel="stylesheet" href="/static/css/dashboard.css" />
+
+  <!-- Vendored libraries (must be placed in static/js/) -->
+  <script src="/static/js/chart.umd.min.js"></script>
+  <script src="/static/js/marked.min.js"></script>
+
+  <!-- App core (router + shared helpers) — load before tab files -->
+  <script src="/static/js/app.js"></script>
+
+  <!-- Tab modules — register window.loadTab_* at parse time -->
+  <script src="/static/js/overview.js"></script>
+  <script src="/static/js/bottleneck.js"></script>
+  <script src="/static/js/adoption.js"></script>
+  <script src="/static/js/memos.js"></script>
+  <script src="/static/js/signals.js"></script>
+  <script src="/static/js/runs.js"></script>
+</head>
+<body>
+
+  <!-- ====================================================================
+       Application header
+       ==================================================================== -->
+  <header id="app-header">
+    <h1>AI Intelligence</h1>
+    <nav id="tab-nav" role="tablist">
+      <button class="tab-btn" data-tab="overview"    role="tab">Overview</button>
+      <button class="tab-btn" data-tab="bottleneck"  role="tab">Bottleneck</button>
+      <button class="tab-btn" data-tab="adoption"    role="tab">Adoption</button>
+      <button class="tab-btn" data-tab="memos"       role="tab">Memos</button>
+      <button class="tab-btn" data-tab="signals"     role="tab">Signals</button>
+      <button class="tab-btn" data-tab="runs"        role="tab">Runs</button>
+    </nav>
+    <span id="last-updated">Loading…</span>
+  </header>
+
+  <!-- ====================================================================
+       Tab content panels
+       ==================================================================== -->
+  <main id="main-content">
+
+    <!-- Overview --------------------------------------------------------- -->
+    <div id="tab-overview" class="tab-content" role="tabpanel">
+      <div id="overview-kpis" class="kpi-grid"></div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h2>Bottleneck Radar</h2>
+          <div class="chart-wrapper" style="height:320px;">
+            <canvas id="overview-radar"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <h2>Adoption Momentum</h2>
+          <div class="chart-wrapper" style="height:320px;">
+            <canvas id="overview-adoption-bar"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottleneck ------------------------------------------------------- -->
+    <div id="tab-bottleneck" class="tab-content" role="tabpanel">
+      <div id="bottleneck-layer-grid" class="layer-grid" style="margin-bottom:1.5rem;"></div>
+      <div class="chart-card">
+        <h2>Layer History</h2>
+        <div class="layer-selector" id="bottleneck-layer-selector"></div>
+        <div class="chart-wrapper" style="height:280px;">
+          <canvas id="bottleneck-history-chart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Adoption --------------------------------------------------------- -->
+    <div id="tab-adoption" class="tab-content" role="tabpanel">
+      <div class="card" style="margin-bottom:1.25rem;">
+        <h2>Industry Factor Heatmap</h2>
+        <div id="adoption-heatmap-wrap" class="heatmap-wrap" style="margin-top:0.75rem;"></div>
+      </div>
+      <div id="adoption-industry-detail" class="industry-detail" style="display:none;"></div>
+    </div>
+
+    <!-- Memos ------------------------------------------------------------ -->
+    <div id="tab-memos" class="tab-content" role="tabpanel">
+      <div class="memos-layout">
+        <aside>
+          <div class="memo-list" id="memo-list"></div>
+        </aside>
+        <article>
+          <div class="memo-content-card" id="memo-content">
+            <div class="empty-state">
+              <div class="empty-icon">📋</div>
+              <p>Select a week to view the intelligence memo.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <!-- Signals ---------------------------------------------------------- -->
+    <div id="tab-signals" class="tab-content" role="tabpanel">
+      <div class="signals-toolbar" id="signals-toolbar">
+        <select id="sig-track">
+          <option value="">All tracks</option>
+          <option value="bottleneck">Bottleneck</option>
+          <option value="adoption">Adoption</option>
+        </select>
+        <input type="text" id="sig-category" placeholder="Category filter…" style="width:160px;" />
+        <label>
+          Min relevance: <span id="sig-rel-val">0.0</span>
+          <input type="range" id="sig-relevance" min="0" max="1" step="0.1" value="0" />
+        </label>
+        <input type="text" id="sig-search" placeholder="Search title…" style="width:200px;" />
+        <button class="btn btn-secondary btn-sm" id="sig-apply-btn">Apply</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="signals-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Source</th>
+              <th>Title</th>
+              <th>Type</th>
+              <th>Relevance</th>
+              <th>Importance</th>
+              <th>Summary</th>
+            </tr>
+          </thead>
+          <tbody id="signals-tbody"></tbody>
+        </table>
+      </div>
+      <div class="load-more-wrap" id="signals-load-more-wrap" style="display:none;">
+        <button class="btn btn-secondary" id="signals-load-more-btn">Load more</button>
+      </div>
+    </div>
+
+    <!-- Runs ------------------------------------------------------------- -->
+    <div id="tab-runs" class="tab-content" role="tabpanel">
+      <div class="runs-header">
+        <h2>Pipeline Runs</h2>
+        <button class="btn btn-primary" id="run-now-btn">Run Now</button>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table" id="runs-table">
+          <thead>
+            <tr>
+              <th>Run ID</th>
+              <th>ISO Week</th>
+              <th>Status</th>
+              <th>Started</th>
+              <th>Duration</th>
+              <th>Stage</th>
+            </tr>
+          </thead>
+          <tbody id="runs-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ====================================================================
+       Run-status modal
+       ==================================================================== -->
+  <div class="modal-overlay" id="run-modal" aria-modal="true" role="dialog">
+    <div class="modal">
+      <h3>Pipeline Running</h3>
+      <p class="modal-meta" id="run-modal-meta">Starting…</p>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="run-progress-bar" style="width:0%"></div>
+      </div>
+      <div class="progress-label">
+        <span id="run-stage-label">Initialising</span>
+        <span id="run-pct-label">0%</span>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="run-modal-close" disabled>Close</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
