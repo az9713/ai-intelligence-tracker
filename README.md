@@ -22,7 +22,7 @@ Every week the system:
 
 ## The four-layer thesis
 
-The system tracks a causal chain from the [gpt5.5_plan.txt](gpt5.5_plan.txt) research framework:
+The system tracks a causal chain from the research framework:
 
 ```
 AI infrastructure stack
